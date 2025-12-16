@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    // page background similar to your screenshot
-    <div className="w-full h-16 py-6">
+    <div className="fixed top-4 left-0 w-full z-50">
       <div className="max-w-[80%] mx-auto px-4">
         {/* rounded "pill" container */}
-        <div className="bg-[#0b0b0b] rounded-full px-6 py-3 flex items-center shadow-[0_6px_18px_rgba(0,0,0,0.6)]">
+        <div className="bg-[#0a1220] rounded-full px-6 py-3 flex items-center shadow-lg">
           {/* Logo in a small circular box */}
           <Link to="/" className="flex-shrink-0 mr-6">
             <div className="w-10 h-10 rounded-full bg-[#071019] flex items-center justify-center overflow-hidden ring-1 ring-black/40">
