@@ -1,10 +1,11 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import React from "react";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 import { Instagram, Linkedin, Github } from "lucide-react";
 import Footer from "./Footer";
+import React, { useEffect } from "react";
+
 // const fadeUp = {
 //   hidden: { opacity: 0, y: 40 },
 //   visible: { opacity: 1, y: 0 },
@@ -21,9 +22,28 @@ import Footer from "./Footer";
 // };
 
 function Home() {
+  useEffect(() => {
+    const move = (e) => {
+      document.documentElement.style.setProperty("--x", `${e.clientX}px`);
+      document.documentElement.style.setProperty("--y", `${e.clientY}px`);
+    };
+
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
   return (
-    <div className="min-h-screen bg-[#0b0f16] text-white">
+    <div className="min-h-screen bg-black text-white">
       <Navbar />
+      {/* Glowing Cursor */}
+      <div className="pointer-events-none fixed inset-0 z-[9999]">
+        <div
+          className="absolute w-4 h-4 rounded-full bg-indigo-400 opacity-100 blur-xl"
+          style={{
+            transform: "translate(calc(var(--x) - 8px), calc(var(--y) - 8px))",
+          }}
+        />
+      </div>
+
       <main
         className="
     relative pt-28 min-h-screen
@@ -161,6 +181,7 @@ function Home() {
     `,
             img: "/gemini_gaac_robo.png",
             cta: "Explore Projects",
+            path: "/projects",
             reverse: false,
           },
           {
@@ -171,7 +192,8 @@ function Home() {
       Learning here is practical, not passive.
     `,
             img: "/gemini_gaac_workshop.png",
-            cta: "Follow us for workshop updates!",
+            cta: "Follow us on LinkedIn for workshop updates!",
+            path: "https://www.linkedin.com/company/gitam-aero-astro-club/posts/?feedView=all",
             reverse: true,
           },
           {
@@ -182,7 +204,8 @@ function Home() {
       inspiration beyond classrooms.
     `,
             img: "/gaac_starnival.jpeg",
-            cta: "Stay tuned for our latest events!",
+            cta: "Follow us on LinkedIn for event updates!",
+            path: "https://www.linkedin.com/company/gitam-aero-astro-club/posts/?feedView=all",
             reverse: false,
           },
           {
@@ -193,22 +216,25 @@ function Home() {
       timeframes.
     `,
             img: "/gaac_hack.jpeg",
-            cta: "Follow us for upcoming hackathon!",
+            cta: "Follow us on LinkedIn for hackathon updates!",
+            path: "https://www.linkedin.com/company/gitam-aero-astro-club/posts/?feedView=all",
             reverse: true,
           },
         ].map((item, index) => (
           <div
             key={index}
             className={`
-      relative flex items-center
-      ${item.reverse ? "md:flex-row-reverse" : "md:flex-row"}
-      flex-col
-      max-w-7xl mx-auto
-      py-20
-    `}
+  relative flex items-center
+  ${item.reverse ? "md:flex-row-reverse" : "md:flex-row"}
+  flex-col
+  max-w-7xl mx-auto
+  py-20
+  transition-transform duration-500
+  hover:scale-[1.01]
+`}
           >
             {/* Image Side */}
-            <div className="md:w-1/2 w-full h-[40vh] md:h-[50vh] relative">
+            <div className="md:w-1/2 w-full h-[40vh] md:h-[50vh] relative group">
               <img
                 src={item.img}
                 alt={item.title}
@@ -228,21 +254,43 @@ function Home() {
               </p>
 
               {/* CTA Button */}
-              <button
-                className="
-          mt-8 inline-flex items-center gap-2
-          px-6 py-3
-          border border-indigo-400/50
-          text-indigo-300
-          font-space
-          rounded-full
-          hover:bg-indigo-400 hover:text-black
-          transition-all duration-300
-        "
-              >
-                {item.cta}
-                <span className="text-lg">→</span>
-              </button>
+              {item.path.startsWith("/") ? (
+                <Link
+                  to={item.path}
+                  className="
+      mt-8 inline-flex items-center gap-2
+      px-6 py-3
+      border border-indigo-400/50
+      text-indigo-300
+      font-space
+      rounded-full
+      hover:bg-indigo-400 hover:text-black
+      transition-all duration-300
+    "
+                >
+                  {item.cta}
+                  <span className="text-lg">→</span>
+                </Link>
+              ) : (
+                <a
+                  href={item.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+      mt-8 inline-flex items-center gap-2
+      px-6 py-3
+      border border-indigo-400/50
+      text-indigo-300
+      font-space
+      rounded-full
+      hover:bg-indigo-400 hover:text-black
+      transition-all duration-300
+    "
+                >
+                  {item.cta}
+                  <span className="text-lg">→</span>
+                </a>
+              )}
             </div>
 
             {/* Ambient glow */}
@@ -335,7 +383,16 @@ function Home() {
           {/* Mission & Vision */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
             {/* Mission */}
-            <div className="relative border border-white/10 rounded-2xl p-10 bg-white/5 backdrop-blur-sm">
+            <div
+              className="
+  relative border border-white/10 rounded-2xl p-10
+  bg-white/5 backdrop-blur-sm
+  transition-all duration-300
+  hover:border-indigo-400/60
+  hover:shadow-[0_0_40px_rgba(99,102,241,0.15)]
+  hover:-translate-y-1
+"
+            >
               <span className="absolute -top-4 left-6 bg-black px-4 py-1 text-sm tracking-widest uppercase text-indigo-400">
                 Mission
               </span>
@@ -346,7 +403,16 @@ function Home() {
             </div>
 
             {/* Vision */}
-            <div className="relative border border-white/10 rounded-2xl p-10 bg-white/5 backdrop-blur-sm">
+            <div
+              className="
+  relative border border-white/10 rounded-2xl p-10
+  bg-white/5 backdrop-blur-sm
+  transition-all duration-300
+  hover:border-indigo-400/60
+  hover:shadow-[0_0_40px_rgba(99,102,241,0.15)]
+  hover:-translate-y-1
+"
+            >
               <span className="absolute -top-4 left-6 bg-black px-4 py-1 text-sm tracking-widest uppercase text-indigo-400">
                 Vision
               </span>
@@ -419,8 +485,8 @@ function Home() {
                 link: "/projects",
               },
               {
-                title: "Read Member Blogs",
-                desc: "Insights, experiences, and technical write-ups by GAAC members.",
+                title: "Read Our Blogs",
+                desc: "Insights, experiences, and technical write-ups .",
                 cta: "Read Blogs",
                 link: "/blogs",
               },

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const CATEGORIES = ["All", "Robotics", "Space Tech", "Astronomy"];
 
@@ -75,7 +76,7 @@ export default function Blogs() {
   }, [selected]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#041526] via-[#071633] to-[#0b1726] text-slate-100">
+    <div className="min-h-screen bg-black text-white">
       <Navbar />
 
       <main className="max-w-6xl mx-auto px-6 pt-20 pb-16">
@@ -190,7 +191,7 @@ export default function Blogs() {
         </section>
 
         {/* CTA box */}
-        <div className="mt-10 bg-[#021825]/60 border border-[#10364a] rounded-xl p-8 text-center shadow-md">
+        {/* <div className="mt-10 bg-[#021825]/60 border border-[#10364a] rounded-xl p-8 text-center shadow-md">
           <h3 className="text-xl font-bold text-[#e6f7ff]">
             Want To Collaborate ?
           </h3>
@@ -214,12 +215,10 @@ export default function Blogs() {
               Join Our Club
             </button>
           </div>
-        </div>
+        </div> */}
       </main>
 
-      <footer className="text-center py-8 text-slate-400">
-        © {new Date().getFullYear()} GITAM Aero Astro Club — All rights reserved
-      </footer>
+      <Footer />
     </div>
   );
 }

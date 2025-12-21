@@ -1,19 +1,28 @@
 import React from "react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 export default function Teams() {
   const teams = [
     {
+      title: "🔭 Stargazers",
+      desc: "Exploring the cosmos through observation, research, and astronomy outreach.",
+      cta: "Meet Stargazers →",
+    },
+    {
       title: "🤖 Robusta",
-      desc: "Building autonomous systems and robotic solutions for aerospace applications — from rovers to drones, we create the machines of tomorrow.",
+      desc: "Building autonomous systems and robotic solutions for aerospace applications — from rovers to drones.",
+      cta: "Meet Robusta →",
     },
     {
       title: "💻 Programmers",
-      desc: "Developing flight software, data-processing tools and simulations that make missions possible — elegant code for complex systems.",
+      desc: "Developing flight software, simulations, and data-driven tools that power intelligent systems.",
+      cta: "Meet Programmers →",
     },
     {
-      title: "🔭 Stargazers",
-      desc: "Exploring the cosmos through observation, research and outreach — unlocking the mysteries of space and celestial phenomena.",
+      title: "🌟 Core Team",
+      desc: "Ensuring smooth coordination, leadership, and execution across all GAAC initiatives.",
+      cta: "Meet the Core Team →",
     },
   ];
 
@@ -21,117 +30,141 @@ export default function Teams() {
     {
       name: "Sampath Varma Datla",
       role: "President",
-      blurb:
-        "Leading GAAC with a vision for innovation and excellence in aerospace technology.",
       course: "B.Tech CSE, 4th Year",
+      blurb:
+        "Leading GAAC with a vision for innovation, impact, and technical excellence.",
     },
     {
       name: "Dil Barash Mohammad",
-      role: "Vice President (Operations and Outreach)",
+      role: "Vice President (Operations & Outreach)",
+      course: "B.Tech CSE (IoT), 3rd Year",
       blurb:
-        "Oraganizing events, managing operations, and expanding GAAC's reach within and beyond the campus.",
-      course: "B.Tech CSE (IOT), 3rd Year",
+        "Managing events, operations, and expanding GAAC’s presence within and beyond campus.",
     },
     {
-      name: "Narayana Gupta ",
+      name: "Narayana Gupta",
       role: "Vice President (Technical Affairs)",
+      course: "B.Tech CSE (IoT), 3rd Year",
       blurb:
-        "Overseeing technical projects, fostering innovation, and ensuring excellence in all GAAC's engineering endeavors.",
-      course: "B.Tech CSE (IOT), 3rd Year",
+        "Driving technical direction, mentoring projects, and ensuring engineering depth.",
     },
     {
       name: "B Raagni Moulika",
       role: "Secretary",
-      blurb:
-        "Managing communications, documentation, and organizational tasks to keep GAAC running smoothly.",
       course: "BBA Financial Markets, 3rd Year",
+      blurb:
+        "Handling communications, documentation, and organizational workflows.",
     },
   ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#031025] via-[#071633] to-[#0b1726] text-slate-100">
+    <div className="min-h-screen text-white bg-[#020a12] relative overflow-hidden">
+      {/* Global background */}
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.15),transparent_60%)]" />
+
       <Navbar />
 
-      <section className="pt-32 pb-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#9ad1ff]">
-              Our Teams
-            </h2>
-            <p className="mt-3 text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
-              Discover the passionate teams that drive innovation and
-              exploration at GITAM Aero Astro Club. Each team brings unique
-              expertise to push the boundaries of aerospace technology.
-            </p>
-            <div className="w-20 h-1 bg-[#4da3ff] mx-auto mt-4 rounded-full shadow-sm" />
-          </div>
+      {/* ================= HERO ================= */}
+      <section className="pt-32 pb-20 text-center px-6">
+        <h1 className="font-orbitron text-4xl md:text-6xl font-extrabold">
+          Teams that <span className="text-indigo-400">build</span> GAAC
+        </h1>
+        <p className="font-space text-gray-300 mt-6 text-lg max-w-3xl mx-auto">
+          Focused teams. Passionate individuals. One mission — advancing
+          aerospace, robotics, and space science.
+        </p>
+      </section>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {teams.map((t) => (
-              <article
-                key={t.title}
-                className="group p-6 rounded-2xl bg-gradient-to-tr from-[#081830] to-[#0c2746] border border-[#143052] shadow-lg transform transition duration-300 hover:-translate-y-2"
-              >
-                <h3 className="text-xl font-semibold text-[#bfe9ff] mb-3">
-                  {t.title}
+      {/* ================= TEAMS ================= */}
+      <section className="py-28 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-14">
+          {teams.map((team, i) => (
+            <div
+              key={i}
+              className="
+                group relative rounded-3xl p-10
+                border border-white/10
+                bg-white/5 backdrop-blur-md
+                transition-all duration-500
+                hover:-translate-y-2
+                hover:border-indigo-400/60
+                hover:shadow-[0_0_40px_rgba(99,102,241,0.25)]
+              "
+            >
+              {/* Glow overlay */}
+              <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.18),transparent_70%)] opacity-0 group-hover:opacity-100 transition" />
+
+              <div className="relative z-10 text-center">
+                <h3 className="font-orbitron text-3xl font-bold mb-5">
+                  {team.title}
                 </h3>
-                <p className="text-slate-300 leading-relaxed text-sm mb-6">
-                  {t.desc}
+                <p className="font-space text-gray-300 text-lg leading-relaxed max-w-xl mx-auto mb-8">
+                  {team.desc}
                 </p>
-                <div className="flex items-center justify-between">
-                  <a
-                    href="#"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#2f7fd6] to-[#4da3ff] text-white text-sm font-medium shadow-md transition-opacity duration-200 hover:opacity-90"
-                  >
-                    Know More
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
+
+                <button
+                  className="
+                  inline-flex items-center gap-2
+                  px-7 py-3 rounded-full
+                  border border-indigo-400/50
+                  text-indigo-300
+                  hover:bg-indigo-400 hover:text-black
+                  transition
+                "
+                >
+                  {team.cta}
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="bg-gradient-to-b from-[#021425]/40 to-transparent py-12 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#e6f7ff]">
-            Executive Body (2025 - 26)
-          </h2>
-          <p className="mt-4 text-slate-300 max-w-2xl mx-auto">
-            Meet the visionary leaders driving innovation and excellence at
-            GAAC. Our executive team combines technical expertise with strategic
-            leadership.
-          </p>
+      {/* ================= EXECUTIVE BODY ================= */}
+      <section className="py-28 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <p className="text-sm tracking-widest uppercase text-gray-400 mb-4">
+              Leadership
+            </p>
+            <h2 className="font-orbitron text-4xl md:text-5xl font-extrabold">
+              Executive Body <span className="text-indigo-400">(2025–26)</span>
+            </h2>
+          </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-8 text-left">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
             {execs.map((e, i) => (
               <div
                 key={i}
-                className="p-4 w-full rounded-xl bg-gradient-to-b from-[#08273f]/60 to-[#062033]/40 border border-[#12364a] shadow-sm"
+                className="
+                  group relative rounded-3xl p-8
+                  border border-white/10
+                  bg-white/5 backdrop-blur-md
+                  transition-all duration-500
+                  hover:-translate-y-2
+                  hover:border-indigo-400/60
+                  hover:shadow-[0_0_40px_rgba(99,102,241,0.25)]
+                "
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full bg-[#134c74] flex items-center justify-center  shadow-inner"></div>
-                  <div>
-                    <h4 className="font-bold text-[#bfe9ff]">{e.name}</h4>
-                    <p className="text-sm text-slate-300">{e.role}</p>
-                    <p className="text-xs text-slate-500 mt-1">{e.course}</p>
+                <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.15),transparent_70%)] opacity-0 group-hover:opacity-100 transition" />
+
+                <div className="relative z-10">
+                  <h4 className="font-semibold text-lg">{e.name}</h4>
+                  <p className="text-sm text-indigo-300">{e.role}</p>
+                  <p className="text-xs text-gray-400 mt-1">{e.course}</p>
+
+                  <p className="font-space text-gray-300 mt-4 leading-relaxed">
+                    {e.blurb}
+                  </p>
+
+                  <div className="mt-5 flex gap-3">
+                    <button className="px-4 py-1.5 text-sm rounded-full border border-indigo-400/40 text-indigo-300 hover:bg-indigo-400 hover:text-black transition">
+                      Email
+                    </button>
+                    <button className="px-4 py-1.5 text-sm rounded-full border border-indigo-400/40 text-indigo-300 hover:bg-indigo-400 hover:text-black transition">
+                      LinkedIn
+                    </button>
                   </div>
-                </div>
-
-                <p className="text-sm text-slate-300 mt-3">{e.blurb}</p>
-
-                <div className="mt-4 flex items-center gap-3">
-                  <a
-                    href="#"
-                    className="text-sm px-3 py-1 rounded-md bg-transparent border border-[#235b82] text-[#9ed7ff] hover:bg-[#123c58]/40"
-                  >
-                    Email
-                  </a>
-                  <a
-                    href="#"
-                    className="text-sm px-3 py-1 rounded-md bg-transparent border border-[#235b82] text-[#9ed7ff] hover:bg-[#123c58]/40"
-                  >
-                    LinkedIn
-                  </a>
                 </div>
               </div>
             ))}
@@ -139,9 +172,7 @@ export default function Teams() {
         </div>
       </section>
 
-      <footer className="text-center py-8 text-slate-400">
-        © {new Date().getFullYear()} GITAM Aero Astro Club — All rights reserved
-      </footer>
+      <Footer />
     </div>
   );
 }
