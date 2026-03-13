@@ -58,7 +58,7 @@ function Recruitments() {
 
               <div className="flex items-center justify-center gap-6">
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/aeroastro.gitam/"
                   target="_blank"
                   rel="noreferrer"
                   className="
@@ -74,7 +74,7 @@ function Recruitments() {
                 </a>
 
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/company/gitam-aero-astro-club/"
                   target="_blank"
                   rel="noreferrer"
                   className="
