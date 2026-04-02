@@ -79,15 +79,17 @@ export default function Navbar() {
       <div className="max-w-[90%] mx-auto px-2">
         <div className="relative bg-[#0a1220]/80 backdrop-blur-xl border border-white/10 rounded-full px-4 py-3 flex items-center">
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0">
+          <Link to="/" className="flex-shrink-0 cursor-pointer">
             <div
-              className="w-10 h-10 rounded-full bg-[#071019] bg-center bg-no-repeat bg-contain"
+              className="w-10 h-10 rounded-full bg-[#071019] bg-center bg-no-repeat bg-contain 
+  cursor-pointer transition-transform duration-300 hover:scale-110"
               style={{ backgroundImage: "url('/gaac_logo.png')" }}
             />
           </Link>
 
           {/* Desktop Nav */}
           <ul className="hidden md:flex flex-1 justify-center gap-12">
+            {navItem("/achievements", "Achievements")}
             {navItem("/teams", "Teams")}
             {navItem("/projects", "Projects")}
             {navItem("/blogs", "Blogs")}
@@ -98,7 +100,12 @@ export default function Navbar() {
           <div className="hidden md:flex ml-6">
             {!token ? (
               <Link to="/login">
-                <button className="px-5 py-2 rounded-full bg-[#4da3ff] text-black">
+                <button
+                  className="px-5 py-2 rounded-full bg-[#4da3ff] text-black 
+cursor-pointer transition-all duration-300 
+hover:scale-105 hover:shadow-[0_0_12px_rgba(77,163,255,0.6)]"
+                >
+                  {" "}
                   LOGIN
                 </button>
               </Link>
@@ -149,6 +156,7 @@ export default function Navbar() {
         {open && (
           <div className="mt-3 bg-[#0a1220] border border-white/10 rounded-2xl p-4 md:hidden">
             <ul className="space-y-4">
+              {navItem("/achievements", "Achievements")}
               {navItem("/teams", "Teams")}
               {navItem("/projects", "Projects")}
               {navItem("/blogs", "Blogs")}
@@ -156,7 +164,11 @@ export default function Navbar() {
 
               {!token ? (
                 <Link to="/login">
-                  <button className="w-full px-5 py-2 rounded-full bg-[#4da3ff] text-black">
+                  <button
+                    className="w-full px-5 py-2 rounded-full bg-[#4da3ff] text-black 
+cursor-pointer transition-all duration-300 hover:scale-105"
+                  >
+                    {" "}
                     LOGIN
                   </button>
                 </Link>

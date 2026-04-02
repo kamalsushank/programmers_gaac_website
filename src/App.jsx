@@ -14,7 +14,7 @@ import Robusta from "./components/Robusta";
 import Programmers from "./components/Programmers";
 import CoreTeam from "./components/CoreTeam";
 import Achievements from "./components/Achievements";
-
+import NotFound from "./components/NotFound";
 function App() {
   return (
     <>
@@ -29,11 +29,12 @@ function App() {
           <Route path="/teams" element={<Teams />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/user-details" element={<CompleteProfile />} />
-          <Route path="/teams/Stargazers" element={<Stargazers />} />
-          <Route path="/teams/Robusta" element={<Robusta />} />
-          <Route path="/teams/Programmers" element={<Programmers />} />
-          <Route path="/teams/CoreTeam" element={<CoreTeam />} />
+          <Route path="/teams/stargazers" element={<Stargazers />} />
+          <Route path="/teams/robusta" element={<Robusta />} />
+          <Route path="/teams/programmers" element={<Programmers />} />
+          <Route path="/teams/coreteam" element={<CoreTeam />} />
           <Route path="/achievements" element={<Achievements />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>

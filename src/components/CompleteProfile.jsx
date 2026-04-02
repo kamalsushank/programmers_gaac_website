@@ -9,21 +9,16 @@ function CompleteProfile() {
 
   const [formData, setFormData] = useState({
     name: "",
-    collegeId: "",
-    course: "",
-    yearOfStudy: "",
   });
 
-  const requiredFields = ["name", "collegeId", "course", "yearOfStudy"];
-  const isValid = requiredFields.every((field) => formData[field]?.trim());
+  const isValid = formData.name.trim() !== "";
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+      name: e.target.value,
     });
   };
 
@@ -31,7 +26,7 @@ function CompleteProfile() {
     e.preventDefault();
 
     if (!isValid) {
-      setMessage("All fields are required.");
+      setMessage("Name is required.");
       return;
     }
 
@@ -39,7 +34,7 @@ function CompleteProfile() {
       setLoading(true);
       setMessage("");
 
-      await api.completeProfile(formData);
+      await api.completeProfile({ name: formData.name });
 
       const profile = await api.getProfile();
 
@@ -62,66 +57,19 @@ function CompleteProfile() {
         <div className="relative z-10 w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-extrabold">Complete Your Profile</h1>
-            <p className="text-gray-300 mt-2 text-sm">
-              Just a few quick details
-            </p>
+            <p className="text-gray-300 mt-2 text-sm">Just enter your name</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name */}
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Name *</label>
+              <label className="block text-sm text-gray-400 mb-1">
+                Enter your name:
+              </label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                required
-                className="w-full px-4 py-2 rounded-xl bg-black/40 border border-white/10"
-              />
-            </div>
-
-            {/* College ID */}
-            <div>
-              <label className="block text-sm text-gray-400 mb-1">
-                College ID *
-              </label>
-              <input
-                type="text"
-                name="collegeId"
-                value={formData.collegeId}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 rounded-xl bg-black/40 border border-white/10"
-              />
-            </div>
-
-            {/* Course */}
-            <div>
-              <label className="block text-sm text-gray-400 mb-1">
-                Course *
-              </label>
-              <input
-                type="text"
-                name="course"
-                value={formData.course}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 rounded-xl bg-black/40 border border-white/10"
-              />
-            </div>
-
-            {/* Year */}
-            <div>
-              <label className="block text-sm text-gray-400 mb-1">
-                Year of Study *
-              </label>
-              <input
-                type="text"
-                name="yearOfStudy"
-                value={formData.yearOfStudy}
-                onChange={handleChange}
-                required
                 className="w-full px-4 py-2 rounded-xl bg-black/40 border border-white/10"
               />
             </div>

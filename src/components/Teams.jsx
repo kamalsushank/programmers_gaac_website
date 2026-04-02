@@ -249,31 +249,32 @@ export default function Teams() {
       <Navbar />
 
       {/* ================= HERO ================= */}
-      <section className="pt-40 pb-20 text-center px-6">
+      <section className="pt-36 pb-6 text-center px-6">
         <h1 className="font-orbitron text-4xl md:text-6xl font-extrabold">
           Teams that <span className="text-indigo-400">build</span> GAAC
         </h1>
-        <p className="font-space text-gray-300 mt-6 text-lg max-w-3xl mx-auto">
+        <p className="font-space text-gray-300 mt-4 text-lg max-w-3xl mx-auto">
+          {" "}
           Focused teams. Passionate individuals. One mission — advancing
           aerospace, robotics, and space science.
         </p>
       </section>
 
       {/* ================= TEAMS ================= */}
-      <section className="py-28 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-14">
+      <section className="py-20 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
           {teams.map((team, i) => (
             <div
               key={i}
-              className="group relative rounded-3xl p-10 border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:border-indigo-400/60 hover:shadow-[0_0_40px_rgba(99,102,241,0.25)]"
+              className="group relative rounded-3xl p-8 border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:border-indigo-400/60 hover:shadow-[0_0_40px_rgba(99,102,241,0.25)]"
             >
               <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.18),transparent_70%)] opacity-0 group-hover:opacity-100 transition" />
 
               <div className="relative z-10 text-center">
-                <h3 className="font-orbitron text-3xl font-bold mb-5">
+                <h3 className="font-orbitron text-3xl font-bold mb-3">
                   {team.title}
                 </h3>
-                <p className="font-space text-gray-300 text-lg leading-relaxed max-w-xl mx-auto mb-8">
+                <p className="font-space text-gray-300 text-lg leading-relaxed max-w-xl mx-auto mb-5">
                   {team.desc}
                 </p>
 
@@ -290,9 +291,9 @@ export default function Teams() {
       </section>
 
       {/* ================= EXECUTIVE BODY ================= */}
-      <section className="py-28 px-6">
+      <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-20">
+          <div className="text-center mb-14">
             <p className="text-sm tracking-widest uppercase text-gray-400 mb-4">
               Leadership
             </p>
@@ -329,11 +330,11 @@ export default function Teams() {
                     <p className="text-sm text-indigo-300">{e.role}</p>
                     <p className="text-xs text-gray-400 mt-1">{e.course}</p>
 
-                    <p className="font-space text-gray-300 mt-4 leading-relaxed">
+                    <p className="font-space text-gray-300 mt-3 leading-relaxed">
                       {e.blurb}
                     </p>
 
-                    <div className="mt-5 flex gap-3">
+                    <div className="mt-4 flex gap-3">
                       {e.email && (
                         <a
                           href={`mailto:${e.email}`}
