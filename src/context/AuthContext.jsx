@@ -7,13 +7,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔥 Load user ONLY if token exists
+  // Load user ONLY if token exists
   useEffect(() => {
     const loadUser = async () => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        // 🔥 No token → skip API call
+        // No token → skip API call
         if (!token) {
           setLoading(false);
           return;
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
         // make sure user is considered logged out
         setUser(null);
 
-        // 🔥 If profile not ready → just ignore (don't surface an error to
+        // If profile not ready → just ignore (don't surface an error to
         // the user, we'll prompt them to complete the form later).
         if (err.status === 400 || err.status === 403 || err.status === 404) {
           console.log("Profile not ready yet");
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
-  // 🔥 Login flow
+  // Login flow
   const login = async (email, password) => {
     await api.login(email, password);
 
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔥 Logout flow
+  // Logout flow
   const logout = async () => {
     try {
       await api.logout();

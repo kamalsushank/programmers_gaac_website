@@ -28,12 +28,12 @@ export default function Signup() {
     try {
       const res = await api.sendOtp(email);
 
-      console.log("OTP RESPONSE:", res);
+      // console.log("OTP RESPONSE:", res);
 
       setMsg("OTP sent! Check your email.");
       setStep(2);
     } catch (err) {
-      console.log("OTP ERROR:", err);
+      // console.log("OTP ERROR:", err);
 
       setMsg(`Failed: ${err.data?.message || "Unknown error"}`);
     } finally {
@@ -57,7 +57,7 @@ export default function Signup() {
 
       const res = await api.signUp(email, otp, password);
 
-      console.log("SIGNUP SUCCESS:", res);
+      // console.log("SIGNUP SUCCESS:", res);
 
       localStorage.setItem("email", email);
 
@@ -107,6 +107,9 @@ export default function Signup() {
 
           {step === 2 && (
             <form onSubmit={confirmSignup} className="space-y-4">
+              <p className="text-center text-gray-400">
+                OTP sent to <span className="text-indigo-300">{email}</span>
+              </p>
               <input
                 type="text"
                 placeholder="Enter OTP"
