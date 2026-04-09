@@ -1,413 +1,219 @@
-// // // this one is to test the backend integration for blogs.
-import { useEffect, useState } from "react";
-import api from "../services/api";
-
-// export default function Blogs() {
-//   const [blogs, setBlogs] = useState([]);
-
-//   useEffect(() => {
-//     const fetchBlogs = async () => {
-//       const res = await api.request("/api/public/get-all-blogs", {
-//         method: "GET",
-//         includeAuth: false,
-//       });
-
-//       const data = await res.json();
-//       setBlogs(data);
-//     };
-
-//     fetchBlogs();
-//   }, []);
-
-//   return (
-//     <div>
-//       {blogs.map((blog) => (
-//         <div key={blog.id}>
-//           <h2>{blog.title}</h2>
-//           <p>{blog.content}</p>
-//           <p>{blog.authorName}</p>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
-// this one is  the one currently live in the website
-import React from "react";
+import { useEffect, useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import api from "../services/api";
+
+// ─── Scroll-reveal wrapper ────────────────────────────────────────────────────
+function FadeInWhenVisible({ children, delay = 0, direction = "up" }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const variants = {
+    hidden: {
+      opacity: 0,
+      y: direction === "up" ? 40 : direction === "down" ? -40 : 0,
+      x: direction === "left" ? 50 : direction === "right" ? -50 : 0,
+    },
+    visible: { opacity: 1, y: 0, x: 0 },
+  };
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={variants}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── Glowing cursor ───────────────────────────────────────────────────────────
+function GlowCursor() {
+  const [pos, setPos] = useState({ x: -100, y: -100 });
+  useEffect(() => {
+    const move = (e) => setPos({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+  return (
+    <motion.div
+      className="pointer-events-none fixed z-[9999]"
+      animate={{ x: pos.x - 12, y: pos.y - 12 }}
+      transition={{ type: "spring", stiffness: 500, damping: 40, mass: 0.3 }}
+    >
+      <div className="w-6 h-6 rounded-full bg-indigo-400 opacity-60 blur-lg" />
+    </motion.div>
+  );
+}
 
 export default function Blogs() {
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const res = await api.request("/api/public/get-all-blogs", {
-        method: "GET",
-        includeAuth: false,
-      });
-
-      const data = await res.json();
-      setBlogs(data);
+      try {
+        setLoading(true);
+        const res = await api.request("/api/public/get-all-blogs", {
+          method: "GET",
+          includeAuth: false,
+        });
+        const data = await res.json();
+        setBlogs(data);
+      } catch (err) {
+        console.error(err);
+        setError("Unable to load blogs.");
+      } finally {
+        setLoading(false);
+      }
     };
-
     fetchBlogs();
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      <GlowCursor />
       <Navbar />
 
-      {/* ================= HERO ================= */}
-      <section className="relative pt-32 pb-24 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.15),transparent_65%)]" />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 ">
-          <h1 className="font-orbitron text-4xl md:text-6xl font-extrabold">
-            GAAC <span className="text-indigo-400">Blogs</span>
-          </h1>
-          <p className="font-space text-gray-300 mt-6 text-lg max-w-3xl mx-auto">
-            Ideas, experiences, and learnings shared by GAAC members — from
-            aerospace insights to hands-on engineering journeys.
-          </p>
-        </div>
-      </section>
+      {/* ═══════════════════════════════════════════════════
+          HERO
+      ═══════════════════════════════════════════════════ */}
+      <section className="relative bg-gradient-to-b from-[#05070d] to-black pt-36 pb-20 text-center px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.12),transparent_60%)] pointer-events-none" />
 
-      {/* ================= BLOG LIST ================= */}
-      <section className="relative  px-6">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08),transparent_70%)]" />
+        {/* Floating particles */}
+        {[...Array(7)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-indigo-400/40"
+            style={{ top: `${12 + i * 10}%`, left: `${5 + i * 14}%` }}
+            animate={{ y: [0, -16, 0], opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+          />
+        ))}
 
-        <div className="relative z-10 max-w-6xl mx-auto">
-          <h2 className="font-orbitron text-3xl md:text-4xl font-bold text-center mb-16">
-            Featured Blogs
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {blogs.map((b, idx) => (
-              <div
-                key={idx}
-                className="
-                  relative rounded-3xl p-7
-                  border border-white/10
-                  bg-white/5 backdrop-blur-md
-                  hover:border-indigo-400/60
-                  transition-all duration-300
-                  hover:-translate-y-2
-                "
-              >
-                <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.12),transparent_70%)] opacity-0 hover:opacity-100 transition" />
-
-                <div className="relative z-10 flex flex-col h-full">
-                  <h3 className="font-orbitron text-xl font-bold mb-3">
-                    {b.title}
-                  </h3>
-
-                  <p className="font-space text-gray-300 leading-relaxed mb-6">
-                    {b.content}
-                  </p>
-
-                  <div className="mt-auto border-t border-white/10 pt-4">
-                    <p className="font-semibold text-white">{b.authorName}</p>
-                    <p className="text-sm text-indigo-300">{b.team}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ================= WRITE BLOG ================= */}
-      {/* <section className="relative py-28 px-6">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(99,102,241,0.12),transparent_70%)]" />
-
-        <div className="relative z-10 max-w-3xl mx-auto">
-          <div
-            className="
-              rounded-3xl
-              border border-white/10
-              bg-white/5 backdrop-blur-xl
-              p-8 md:p-10
-            "
-          >
-            <h2 className="font-orbitron text-3xl font-bold mb-4 text-center">
-              Write a Blog
-            </h2>
-            <p className="font-space text-gray-300 text-center mb-8">
-              Have something to share? Write about your learnings, projects, or
-              experiences with GAAC.
+        <div className="relative z-10">
+          <FadeInWhenVisible>
+            <p className="text-sm tracking-widest uppercase text-gray-400 mb-4">Insights & Stories</p>
+          </FadeInWhenVisible>
+          <FadeInWhenVisible delay={0.1}>
+            <h1 className="font-orbitron text-4xl md:text-6xl font-extrabold leading-tight">
+              GAAC{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-300">
+                Blogs
+              </span>
+            </h1>
+          </FadeInWhenVisible>
+          <FadeInWhenVisible delay={0.2}>
+            <p className="font-space text-gray-300 mt-5 text-lg max-w-2xl mx-auto leading-relaxed">
+              Ideas, experiences, and learnings shared by GAAC members — from
+              aerospace insights to hands-on engineering journeys.
             </p>
-
-            <form className="space-y-5">
-              <input
-                type="text"
-                placeholder="Blog Title"
-                className="
-                  w-full px-4 py-3 rounded-xl
-                  bg-black/40 border border-white/10
-                  text-white placeholder-gray-500
-                  focus:outline-none focus:ring-2 focus:ring-indigo-400/70
-                "
-              />
-
-              <textarea
-                rows="6"
-                placeholder="Write your blog content here..."
-                className="
-                  w-full px-4 py-3 rounded-xl
-                  bg-black/40 border border-white/10
-                  text-white placeholder-gray-500
-                  focus:outline-none focus:ring-2 focus:ring-indigo-400/70
-                  resize-none
-                "
-              />
-
-              <button
-                type="submit"
-                className="
-                  w-full mt-4
-                  px-6 py-3 rounded-full
-                  bg-indigo-500 text-black
-                  font-medium
-                  hover:bg-indigo-400
-                  transition
-                  hover:shadow-[0_0_30px_rgba(99,102,241,0.6)]
-                "
-              >
-                Submit Blog →
-              </button>
-            </form>
-          </div>
+          </FadeInWhenVisible>
+          <FadeInWhenVisible delay={0.3}>
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="w-24 h-[2px] bg-gradient-to-r from-transparent via-indigo-400 to-transparent mx-auto mt-8"
+            />
+          </FadeInWhenVisible>
         </div>
-      </section> */}
+      </section>
+
+      {/* ═══════════════════════════════════════════════════
+          BLOG LIST
+      ═══════════════════════════════════════════════════ */}
+      <section className="relative py-16 px-6">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.06),transparent_70%)] pointer-events-none" />
+        <div className="relative z-10 max-w-6xl mx-auto">
+
+          <FadeInWhenVisible>
+            <h2 className="font-orbitron text-3xl md:text-4xl font-extrabold text-center mb-14">
+              Featured <span className="text-indigo-400">Blogs</span>
+            </h2>
+          </FadeInWhenVisible>
+
+          {/* Loading dots */}
+          {loading && (
+            <div className="flex justify-center items-center gap-3 py-16">
+              {[0, 0.2, 0.4].map((d, i) => (
+                <motion.div
+                  key={i}
+                  className="w-3 h-3 rounded-full bg-indigo-400"
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: d }}
+                />
+              ))}
+            </div>
+          )}
+
+          {error && (
+            <p className="text-center text-red-400 font-space py-8">{error}</p>
+          )}
+
+          {!loading && !error && blogs.length === 0 && (
+            <p className="text-center text-gray-400 font-space py-8">
+              No blogs published yet. Check back soon!
+            </p>
+          )}
+
+          {!loading && blogs.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {blogs.map((b, i) => (
+                <FadeInWhenVisible key={i} delay={i * 0.08} direction="up">
+                  <motion.div
+                    whileHover={{ y: -8, boxShadow: "0 0 50px rgba(99,102,241,0.18)" }}
+                    transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                    className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-400/60 transition-colors duration-500 flex flex-col"
+                  >
+                    {/* Hover glow */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.12),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Corner accent */}
+                    <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-indigo-400/20 rounded-br-lg" />
+
+                    <div className="relative z-10 p-8 flex flex-col flex-1">
+                      {/* Team tag */}
+                      {b.team && (
+                        <span className="text-xs font-space tracking-wider px-3 py-1 rounded-full border border-indigo-400/40 bg-indigo-400/10 text-indigo-300 self-start mb-5">
+                          {b.team}
+                        </span>
+                      )}
+
+                      <h3 className="font-orbitron text-lg font-bold mb-3 group-hover:text-indigo-300 transition-colors duration-300">
+                        {b.title}
+                      </h3>
+                      <p className="font-space text-gray-300 text-sm leading-relaxed flex-1">
+                        {b.content}
+                      </p>
+
+                      {/* Author footer */}
+                      <div className="mt-6 pt-4 border-t border-white/10 flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center font-orbitron font-bold text-sm text-indigo-300">
+                          {b.authorName?.charAt(0) || "?"}
+                        </div>
+                        <div>
+                          <p className="font-orbitron text-sm font-semibold text-white group-hover:text-indigo-200 transition-colors">
+                            {b.authorName}
+                          </p>
+                          {b.team && (
+                            <p className="text-xs text-gray-500 font-space">{b.team}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </FadeInWhenVisible>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
       <Footer />
     </div>
   );
 }
-
-// this one contains sorting based on teams
-
-// import React, { useMemo, useState } from "react";
-// import Navbar from "./Navbar";
-// import Footer from "./Footer";
-
-// const CATEGORIES = ["All", "Robotics", "Space Tech", "Astronomy"];
-
-// const SAMPLE_BLOGS = [
-//   {
-//     id: 1,
-//     title: "Building Your First Drone: A Complete Guide",
-//     excerpt:
-//       "Step-by-step tutorial on building a custom drone from scratch: component selection, assembly, and programming.",
-//     author: "Alex Rodriguez",
-//     date: "January 12, 2025",
-//     tags: ["Python", "OpenCV", "TensorFlow", "ROS"],
-//     category: "Robotics",
-//   },
-//   {
-//     id: 2,
-//     title: "CubeSat Design Fundamentals",
-//     excerpt:
-//       "A beginner-friendly walkthrough on CubeSat subsystems, power budgets, and communication strategies.",
-//     author: "Priya Menon",
-//     date: "March 04, 2025",
-//     tags: ["Embedded", "RF", "CAD"],
-//     category: "Space Tech",
-//   },
-//   {
-//     id: 3,
-//     title: "Photometry Techniques for Variable Stars",
-//     excerpt:
-//       "How to process survey images, extract light curves, and classify variability with open-source tools.",
-//     author: "Dr. S. Rao",
-//     date: "February 02, 2025",
-//     tags: ["AstroPy", "Python", "Statistics"],
-//     category: "Astronomy",
-//   },
-//   {
-//     id: 4,
-//     title: "Swarm Mapping with Multi-UAVs",
-//     excerpt:
-//       "Cooperative strategies and communication patterns that let many small drones produce high-fidelity maps.",
-//     author: "Meera Shah",
-//     date: "April 18, 2025",
-//     tags: ["ROS", "Algorithms", "Simulation"],
-//     category: "Robotics",
-//   },
-//   {
-//     id: 5,
-//     title: "Antenna Tuning for Small Satellites",
-//     excerpt:
-//       "Design trade-offs and prototyping tips for compact high-gain antennas in nanosatellite platforms.",
-//     author: "R. Kumar",
-//     date: "May 08, 2025",
-//     tags: ["RF", "Fabrication"],
-//     category: "Space Tech",
-//   },
-//   {
-//     id: 6,
-//     title: "Imaging Nebulae: From Capture to Publish",
-//     excerpt:
-//       "Capture techniques, stacking workflows, and basic post-processing for astrophotography beginners.",
-//     author: "Anita G",
-//     date: "June 10, 2025",
-//     tags: ["Imaging", "Processing"],
-//     category: "Astronomy",
-//   },
-// ];
-
-// export default function Blogs() {
-//   const [selected, setSelected] = useState("All");
-
-//   const filtered = useMemo(() => {
-//     if (selected === "All") return SAMPLE_BLOGS;
-//     return SAMPLE_BLOGS.filter((b) => b.category === selected);
-//   }, [selected]);
-
-//   return (
-//     <div className="min-h-screen bg-black text-white">
-//       <Navbar />
-
-//       <main className="max-w-6xl mx-auto px-6 pt-20 pb-16">
-//         {/* small label */}
-//         <div className="text-center mb-6">
-//           <p className="text-xs text-[#9ad1ff] font-medium">Knowledge Hub</p>
-//           <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold text-white">
-//             Latest Insights
-//           </h1>
-//           <p className="mt-3 text-slate-300 max-w-2xl mx-auto text-sm sm:text-base">
-//             Dive deep into the world of technology, space exploration, and
-//             robotics with our expert articles and research insights.
-//           </p>
-//         </div>
-
-//         {/* filters */}
-//         <div className="flex items-center justify-center gap-3 flex-wrap mb-8">
-//           {CATEGORIES.map((c) => {
-//             const active = selected === c;
-//             return (
-//               <button
-//                 key={c}
-//                 onClick={() => setSelected(c)}
-//                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all
-//                   ${
-//                     active
-//                       ? "bg-[#00d1ff] text-[#042033] shadow-lg"
-//                       : "bg-[#07283e] text-[#9ad1ff] ring-1 ring-transparent hover:ring-[#154b67]"
-//                   }
-//                 `}
-//                 aria-pressed={active}
-//               >
-//                 {c}
-//               </button>
-//             );
-//           })}
-//         </div>
-
-//         {/* blog cards grid */}
-//         <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-//           {filtered.map((post) => (
-//             <article
-//               key={post.id}
-//               className="rounded-2xl p-5 bg-gradient-to-tr from-[#081830] to-[#0b2746] border border-[#12344a] shadow-inner hover:shadow-lg transform transition hover:-translate-y-1"
-//             >
-//               <div className="flex justify-between items-start">
-//                 <span className="px-2 py-0.5 text-xs rounded-full bg-[#062b44] text-[#bfe9ff] border border-[#0f4b63]">
-//                   Robusta
-//                 </span>
-//                 <div className="text-xs text-slate-400">{/* optional */}</div>
-//               </div>
-
-//               <h3 className="mt-3 text-lg font-semibold text-[#e6f7ff]">
-//                 {post.title}
-//               </h3>
-
-//               <p className="mt-2 text-sm text-slate-300 leading-relaxed min-h-[3.2rem]">
-//                 {post.excerpt}
-//               </p>
-
-//               {/* tags */}
-//               <div className="mt-3 flex flex-wrap gap-2">
-//                 {post.tags.map((t) => (
-//                   <span
-//                     key={t}
-//                     className="text-xs px-2 py-1 rounded-md bg-[#0e2a42] text-slate-200 border border-[#12364a]"
-//                   >
-//                     {t}
-//                   </span>
-//                 ))}
-//               </div>
-
-//               {/* author / date row */}
-//               <div className="mt-4 flex items-center justify-between text-xs text-slate-300">
-//                 <div className="flex items-center gap-2">
-//                   <div className="w-8 h-8 rounded-full bg-[#134c74] flex items-center justify-center text-sm font-semibold text-white">
-//                     {post.author
-//                       .split(" ")
-//                       .map((n) => n[0])
-//                       .slice(0, 2)
-//                       .join("")}
-//                   </div>
-//                   <div>
-//                     <div className="font-medium text-sm text-[#bfe9ff]">
-//                       {post.author}
-//                     </div>
-//                     <div className="text-xs text-slate-400">{post.date}</div>
-//                   </div>
-//                 </div>
-
-//                 <a
-//                   href="#"
-//                   onClick={(e) => {
-//                     e.preventDefault();
-//                     alert(`Read more: "${post.title}"`);
-//                   }}
-//                   className="inline-block px-3 py-1.5 text-xs rounded-full bg-gradient-to-r from-[#2f7fd6] to-[#4da3ff] text-white font-medium shadow-sm"
-//                 >
-//                   Read More
-//                 </a>
-//               </div>
-//             </article>
-//           ))}
-
-//           {filtered.length === 0 && (
-//             <div className="col-span-full text-center py-16 rounded-xl bg-[#061626] border border-[#123044]">
-//               <p className="text-slate-300">
-//                 No articles found for this category.
-//               </p>
-//             </div>
-//           )}
-//         </section>
-
-//         {/* CTA box */}
-//         {/* <div className="mt-10 bg-[#021825]/60 border border-[#10364a] rounded-xl p-8 text-center shadow-md">
-//           <h3 className="text-xl font-bold text-[#e6f7ff]">
-//             Want To Collaborate ?
-//           </h3>
-//           <p className="mt-3 text-slate-300 max-w-2xl mx-auto">
-//             Join us in building the future of technology. Whether you're a
-//             beginner or expert, there's a place for you to contribute and learn.
-//           </p>
-
-//           <div className="mt-6 flex items-center justify-center gap-4">
-//             <button
-//               onClick={() => alert("Get in touch clicked")}
-//               className="px-5 py-2 rounded-full bg-[#00d1ff] text-[#042033] font-semibold shadow-md"
-//             >
-//               Get In Touch
-//             </button>
-
-//             <button
-//               onClick={() => alert("Join our club clicked")}
-//               className="px-5 py-2 rounded-full bg-transparent border border-[#235b82] text-[#9ed7ff] hover:bg-[#123c58]/30"
-//             >
-//               Join Our Club
-//             </button>
-//           </div>
-//         </div> */}
-//       </main>
-
-//       <Footer />
-//     </div>
-//   );
-// }
