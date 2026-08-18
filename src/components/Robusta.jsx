@@ -1,27 +1,45 @@
 import TeamLayout from "./TeamLayout";
 
+const ROBUSTA = {
+  lead: "Lekkala Jeyavardhan",
+
+  members: [
+    "Dasetti Syampal",
+    "H VamshiKrishna",
+    "D Jithendra Varma",
+    "V S G P Deepak",
+    "S Nithin",
+    "Prem Charan",
+    "Pilaka Venkataa Suuresh",
+    "G. Deepak Sai",
+    "Vankayala Divya Sree",
+  ],
+};
+
 export default function Robusta() {
   return (
     <TeamLayout
       emoji="🤖"
       teamName="Robusta"
-      description="Advancing robotics and autonomous systems in aerospace."
-      mission="Push robotics innovation through autonomous systems and intelligent control."
-      vision="Deliver impactful robotics solutions for aerospace applications."
+      description="Building autonomous systems and robotic solutions for aerospace applications."
+      mission="Design, build, and experiment with robotic systems that address real-world aerospace challenges."
+      vision="To create innovative autonomous systems through hands-on robotics and engineering."
       activities={[
         {
-          title: "🚗 Autonomous Rovers",
-          desc: "Designing intelligent navigation systems.",
+          title: "🤖 Robotics",
+          desc: "Designing and developing autonomous robotic systems.",
         },
         {
-          title: "🚁 Aerial Drones",
-          desc: "Building UAVs for mapping and research.",
+          title: "🚀 Aerospace Systems",
+          desc: "Building technology for aerospace and exploration.",
         },
         {
-          title: "🧠 Control Systems",
-          desc: "Embedded and AI-based robotics systems.",
+          title: "⚙️ Prototyping",
+          desc: "Turning engineering ideas into functional prototypes.",
         },
       ]}
+      lead={ROBUSTA.lead}
+      members={ROBUSTA.members}
     />
   );
 }
