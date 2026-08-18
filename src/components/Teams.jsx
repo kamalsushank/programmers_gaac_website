@@ -1,62 +1,138 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-// ─── Reusable scroll-reveal wrapper ───────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// EXECUTIVE BODY
+// ─────────────────────────────────────────────────────────────
+
+const EXECUTIVE_BODY = [
+  {
+    role: "Founder",
+    name: "VVS BASANTH PEDAPATI",
+    blurb: "The visionary behind GAAC's journey, foundation, and mission.",
+  },
+
+  {
+    role: "President",
+    name: "SAMPATH VARMA DATLA",
+    blurb: "Leading GAAC's vision, direction, and strategic growth.",
+  },
+
+  {
+    role: "Vice President — Operations And Outreach",
+    name: "DIL BARASH MOHAMMED",
+    blurb:
+      "Managing execution, coordination, and smooth functioning across GAAC.",
+  },
+
+  {
+    role: "Vice President — Technical Affairs",
+    name: "NARAYANA GUPTA BODDU",
+    blurb: "Leading GAAC's technical vision, innovation, and development.",
+  },
+
+  {
+    role: "Secretary",
+    name: "RAAGNI MOULIKA",
+    blurb:
+      "Coordinating communication, documentation, and organizational activities.",
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// SCROLL REVEAL
+// ─────────────────────────────────────────────────────────────
+
 function FadeInWhenVisible({ children, delay = 0, direction = "up" }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  const isInView = useInView(ref, {
+    once: true,
+    margin: "-80px",
+  });
+
   const variants = {
     hidden: {
       opacity: 0,
       y: direction === "up" ? 40 : direction === "down" ? -40 : 0,
       x: direction === "left" ? 50 : direction === "right" ? -50 : 0,
     },
-    visible: { opacity: 1, y: 0, x: 0 },
+
+    visible: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+    },
   };
+
   return (
     <motion.div
       ref={ref}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={variants}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.7,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
   );
 }
 
-// ─── Glowing cursor ───────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// GLOW CURSOR
+// ─────────────────────────────────────────────────────────────
+
 function GlowCursor() {
-  const [pos, setPos] = React.useState({ x: -100, y: -100 });
+  const [pos, setPos] = React.useState({
+    x: -100,
+    y: -100,
+  });
+
   React.useEffect(() => {
-    const move = (e) => setPos({ x: e.clientX, y: e.clientY });
+    const move = (e) => {
+      setPos({
+        x: e.clientX,
+        y: e.clientY,
+      });
+    };
+
     window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
+
+    return () => {
+      window.removeEventListener("mousemove", move);
+    };
   }, []);
+
   return (
     <motion.div
       className="pointer-events-none fixed z-[9999]"
-      animate={{ x: pos.x - 12, y: pos.y - 12 }}
-      transition={{ type: "spring", stiffness: 500, damping: 40, mass: 0.3 }}
+      animate={{
+        x: pos.x - 12,
+        y: pos.y - 12,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 500,
+        damping: 40,
+        mass: 0.3,
+      }}
     >
       <div className="w-6 h-6 rounded-full bg-indigo-400 opacity-60 blur-lg" />
     </motion.div>
   );
 }
 
-// ─── Team emoji icon map ───────────────────────────────────────────────────────
-const TEAM_META = {
-  Stargazers: { icon: "🔭", color: "from-violet-500/20 to-indigo-500/10", accent: "#818cf8" },
-  Robusta:    { icon: "🤖", color: "from-blue-500/20 to-indigo-500/10",   accent: "#60a5fa" },
-  Programmers:{ icon: "💻", color: "from-indigo-500/20 to-purple-500/10", accent: "#a5b4fc" },
-  CoreTeam:   { icon: "🌟", color: "from-amber-500/10 to-indigo-500/10",  accent: "#fbbf24" },
-};
+// ─────────────────────────────────────────────────────────────
+// MAIN COMPONENT
+// ─────────────────────────────────────────────────────────────
 
-// ─── Main Component ───────────────────────────────────────────────────────────
 export default function Teams() {
   const teams = [
     {
@@ -66,6 +142,7 @@ export default function Teams() {
       cta: "Meet Stargazers",
       path: "/teams/Stargazers",
     },
+
     {
       title: "Robusta",
       label: "🤖 Robusta",
@@ -73,6 +150,7 @@ export default function Teams() {
       cta: "Meet Robusta",
       path: "/teams/Robusta",
     },
+
     {
       title: "Programmers",
       label: "💻 Programmers",
@@ -80,6 +158,7 @@ export default function Teams() {
       cta: "Meet Programmers",
       path: "/teams/Programmers",
     },
+
     {
       title: "CoreTeam",
       label: "🌟 Core Team",
@@ -89,51 +168,26 @@ export default function Teams() {
     },
   ];
 
-  // ── Executive Body State ──────────────────────────────────────
-  const [execs, setExecs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchExecutiveBody = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          "https://gaac-backend.onrender.com/api/public/get-team-members/EB"
-        );
-        if (!res.ok) throw new Error("Failed to fetch executive body");
-        const data = await res.json();
-        setExecs(data);
-      } catch (err) {
-        console.error(err);
-        setError("Unable to load Executive Body.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchExecutiveBody();
-  }, []);
-
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <GlowCursor />
+
       <Navbar />
 
-      {/* ═══════════════════════════════════════════════════
+      {/* =====================================================
           HERO
-      ═══════════════════════════════════════════════════ */}
+      ===================================================== */}
+
       <section className="relative bg-gradient-to-b from-[#05070d] to-black text-white pt-36 pb-20 text-center px-6 overflow-hidden">
-        {/* Ambient glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.12),transparent_60%)] pointer-events-none" />
 
-        {/* Floating particle dots */}
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 rounded-full bg-indigo-400/40"
             style={{
-              top: `${15 + Math.random() * 70}%`,
-              left: `${5 + Math.random() * 90}%`,
+              top: `${15 + i * 10}%`,
+              left: `${8 + i * 12}%`,
             }}
             animate={{
               y: [0, -18, 0],
@@ -172,21 +226,24 @@ export default function Teams() {
             </p>
           </FadeInWhenVisible>
 
-          {/* Animated underline */}
           <FadeInWhenVisible delay={0.3}>
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              transition={{
+                duration: 0.8,
+                delay: 0.5,
+              }}
               className="w-24 h-[2px] bg-gradient-to-r from-transparent via-indigo-400 to-transparent mx-auto mt-8"
             />
           </FadeInWhenVisible>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════
-          TEAMS GRID
-      ═══════════════════════════════════════════════════ */}
+      {/* =====================================================
+          TEAMS
+      ===================================================== */}
+
       <section className="relative py-24 px-6">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.06),transparent_70%)] pointer-events-none" />
 
@@ -196,208 +253,186 @@ export default function Teams() {
               <p className="text-sm tracking-widest uppercase text-gray-400 mb-3">
                 Our Wings
               </p>
+
               <h2 className="font-orbitron text-3xl md:text-5xl font-extrabold">
-                Explore our{" "}
-                <span className="text-indigo-400">divisions</span>
+                Explore our <span className="text-indigo-400">divisions</span>
               </h2>
             </div>
           </FadeInWhenVisible>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {teams.map((team, i) => {
-              const meta = TEAM_META[team.title] || {};
-              return (
-                <FadeInWhenVisible
-                  key={i}
-                  delay={i * 0.1}
-                  direction={i % 2 === 0 ? "left" : "right"}
+            {teams.map((team, i) => (
+              <FadeInWhenVisible
+                key={team.title}
+                delay={i * 0.1}
+                direction={i % 2 === 0 ? "left" : "right"}
+              >
+                <motion.div
+                  whileHover={{
+                    y: -8,
+                    boxShadow: "0 0 50px rgba(99,102,241,0.18)",
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 22,
+                  }}
+                  className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-400/60 transition-colors duration-500"
                 >
-                  <motion.div
-                    whileHover={{ y: -8, boxShadow: `0 0 50px rgba(99,102,241,0.18)` }}
-                    transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                    className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-400/60 transition-colors duration-500"
-                  >
-                    {/* Gradient sheen on hover */}
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${meta.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                    />
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                    {/* Corner accent */}
-                    <div className="absolute bottom-4 right-4 w-12 h-12 border-b border-r border-indigo-400/20 rounded-br-xl" />
+                  <div className="relative z-10 p-10 flex flex-col items-center text-center gap-4">
+                    <h3 className="font-orbitron text-2xl md:text-3xl font-bold group-hover:text-indigo-300 transition-colors">
+                      {team.label}
+                    </h3>
 
-                    <div className="relative z-10 p-10 flex flex-col items-center text-center gap-4">
+                    <p className="font-space text-gray-300 text-base leading-relaxed max-w-sm">
+                      {team.desc}
+                    </p>
 
-
-                      <h3 className="font-orbitron text-2xl md:text-3xl font-bold group-hover:text-indigo-300 transition-colors duration-300">
-                        {team.label}
-                      </h3>
-
-                      <p className="font-space text-gray-300 text-base leading-relaxed max-w-sm">
-                        {team.desc}
-                      </p>
-
-                      <Link
-                        to={team.path}
-                        className="mt-2 inline-flex items-center gap-2 px-6 py-2.5 border border-indigo-400/50 text-indigo-300 font-space rounded-full text-sm hover:bg-indigo-400 hover:text-black transition-all duration-300"
-                      >
-                        {team.cta}
-                        <motion.span
-                          animate={{ x: [0, 4, 0] }}
-                          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                          className="text-base"
-                        >
-                          →
-                        </motion.span>
-                      </Link>
-                    </div>
-                  </motion.div>
-                </FadeInWhenVisible>
-              );
-            })}
+                    <Link
+                      to={team.path}
+                      className="mt-2 inline-flex items-center gap-2 px-6 py-2.5 border border-indigo-400/50 text-indigo-300 font-space rounded-full text-sm hover:bg-indigo-400 hover:text-black transition-all duration-300"
+                    >
+                      {team.cta}
+                      <span>→</span>
+                    </Link>
+                  </div>
+                </motion.div>
+              </FadeInWhenVisible>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════
+      {/* =====================================================
           EXECUTIVE BODY
-      ═══════════════════════════════════════════════════ */}
+      ===================================================== */}
+
       <section className="relative bg-gradient-to-b from-black to-[#02030a] py-28 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.09),transparent_70%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.10),transparent_65%)] pointer-events-none" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          {/* Section Header */}
+          {/* HEADER */}
+
           <div className="text-center mb-16">
             <FadeInWhenVisible>
               <p className="text-sm tracking-widest uppercase text-gray-400 mb-3">
                 Leadership
               </p>
             </FadeInWhenVisible>
+
             <FadeInWhenVisible delay={0.1}>
               <h2 className="font-orbitron text-4xl md:text-5xl font-extrabold">
                 Executive Body{" "}
                 <span className="text-indigo-400">(2025–26)</span>
               </h2>
             </FadeInWhenVisible>
+
             <FadeInWhenVisible delay={0.2}>
               <p className="font-space text-gray-400 mt-4 max-w-xl mx-auto">
                 The people steering GAAC's vision, operations, and growth.
               </p>
             </FadeInWhenVisible>
-            <FadeInWhenVisible delay={0.3}>
+          </div>
+
+          {/* =================================================
+              FOUNDER
+          ================================================= */}
+
+          <div className="flex justify-center">
+            <FadeInWhenVisible>
               <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="w-24 h-[2px] bg-gradient-to-r from-transparent via-indigo-400 to-transparent mx-auto mt-6"
-              />
+                whileHover={{
+                  y: -8,
+                  boxShadow: "0 0 60px rgba(99,102,241,0.22)",
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 22,
+                }}
+                className="w-full max-w-md rounded-2xl border border-indigo-400/30 bg-white/5 backdrop-blur-sm p-8 text-center"
+              >
+                {/* First letter */}
+
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full border border-indigo-400/40 bg-indigo-500/10 flex items-center justify-center">
+                  <span className="font-orbitron text-4xl text-indigo-300">
+                    {EXECUTIVE_BODY[0].name.charAt(0)}
+                  </span>
+                </div>
+
+                <p className="text-xs tracking-widest uppercase text-indigo-400 font-space">
+                  {EXECUTIVE_BODY[0].role}
+                </p>
+
+                <h3 className="font-orbitron text-2xl font-bold mt-2">
+                  {EXECUTIVE_BODY[0].name}
+                </h3>
+
+                <p className="font-space text-gray-400 text-sm mt-4 leading-relaxed">
+                  {EXECUTIVE_BODY[0].blurb}
+                </p>
+              </motion.div>
             </FadeInWhenVisible>
           </div>
 
-          {/* Loading state */}
-          {loading && (
-            <div className="flex justify-center items-center gap-3 py-16">
-              <motion.div
-                className="w-3 h-3 rounded-full bg-indigo-400"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 0.8, repeat: Infinity, delay: 0 }}
-              />
-              <motion.div
-                className="w-3 h-3 rounded-full bg-indigo-400"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
-              />
-              <motion.div
-                className="w-3 h-3 rounded-full bg-indigo-400"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}
-              />
-            </div>
-          )}
+          {/* Connector */}
 
-          {/* Error state */}
-          {error && (
-            <p className="text-center text-red-400 font-space py-8">{error}</p>
-          )}
+          <div className="hidden md:block w-px h-12 bg-indigo-400/30 mx-auto" />
 
-          {/* Empty state */}
-          {!loading && execs.length === 0 && !error && (
-            <p className="text-center text-gray-400 font-space py-8">
-              No Executive Members added yet.
-            </p>
-          )}
+          {/* =================================================
+              REMAINING EXECUTIVE BODY
+          ================================================= */}
 
-          {/* Exec Cards */}
-          {!loading && execs.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              {execs.map((e, i) => (
-                <FadeInWhenVisible
-                  key={e._id}
-                  delay={i * 0.1}
-                  direction={i % 2 === 0 ? "left" : "right"}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {EXECUTIVE_BODY.slice(1).map((member, i) => (
+              <FadeInWhenVisible
+                key={member.name}
+                delay={i * 0.1}
+                direction="up"
+              >
+                <motion.div
+                  whileHover={{
+                    y: -6,
+                    boxShadow: "0 0 40px rgba(99,102,241,0.18)",
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 22,
+                  }}
+                  className="group h-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-7 text-center hover:border-indigo-400/60 transition-colors duration-500"
                 >
-                  <motion.div
-                    whileHover={{ y: -6, boxShadow: "0 0 50px rgba(99,102,241,0.2)" }}
-                    transition={{ type: "spring", stiffness: 250, damping: 22 }}
-                    className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden hover:border-indigo-400/60 transition-colors duration-500"
-                  >
-                    {/* Hover glow overlay */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.12),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* First letter */}
 
-                    {/* Corner accent */}
-                    <div className="absolute bottom-4 right-4 w-10 h-10 border-b border-r border-indigo-400/20 rounded-br-lg" />
+                  <div className="w-20 h-20 mx-auto mb-5 rounded-full border border-indigo-400/30 bg-indigo-500/10 flex items-center justify-center">
+                    <span className="font-orbitron text-3xl text-indigo-300">
+                      {member.name.charAt(0)}
+                    </span>
+                  </div>
 
-                    <div className="relative z-10 p-8">
+                  {/* Position */}
 
-                      {/* Avatar placeholder */}
-                      <div className="w-12 h-12 rounded-full bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300 font-orbitron font-bold text-lg mb-5">
-                        {e.name?.charAt(0) || "?"}
-                      </div>
+                  <p className="text-xs tracking-widest uppercase text-indigo-400 font-space">
+                    {member.role}
+                  </p>
 
-                      <h4 className="font-orbitron text-lg font-bold group-hover:text-indigo-300 transition-colors duration-300">
-                        {e.name}
-                      </h4>
-                      <p className="text-sm text-indigo-300 mt-1 font-space">{e.role}</p>
-                      <p className="text-xs text-gray-500 mt-1 font-space">{e.course}</p>
+                  {/* Name */}
 
-                      {e.blurb && (
-                        <p className="font-space text-gray-300 mt-4 text-sm leading-relaxed">
-                          {e.blurb}
-                        </p>
-                      )}
+                  <h3 className="font-orbitron text-lg font-bold mt-2 group-hover:text-indigo-300 transition-colors">
+                    {member.name}
+                  </h3>
 
-                      {/* CTA Links */}
-                      {(e.email || e.linkedin) && (
-                        <div className="mt-5 flex flex-wrap gap-3">
-                          {e.email && (
-                            <motion.a
-                              href={`mailto:${e.email}`}
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.97 }}
-                              className="px-4 py-1.5 text-xs font-space rounded-full border border-indigo-400/40 text-indigo-300 hover:bg-indigo-400 hover:text-black transition-all duration-300"
-                            >
-                              ✉ Email
-                            </motion.a>
-                          )}
-                          {e.linkedin && (
-                            <motion.a
-                              href={e.linkedin}
-                              target="_blank"
-                              rel="noreferrer"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.97 }}
-                              className="px-4 py-1.5 text-xs font-space rounded-full border border-indigo-400/40 text-indigo-300 hover:bg-indigo-400 hover:text-black transition-all duration-300"
-                            >
-                              in LinkedIn
-                            </motion.a>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                </FadeInWhenVisible>
-              ))}
-            </div>
-          )}
+                  {/* Blurb */}
+
+                  <p className="font-space text-gray-500 text-sm leading-relaxed mt-4">
+                    {member.blurb}
+                  </p>
+                </motion.div>
+              </FadeInWhenVisible>
+            ))}
+          </div>
         </div>
       </section>
 

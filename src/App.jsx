@@ -6,9 +6,6 @@ import Recruitments from "./components/Recruitments";
 import Blogs from "./components/Blogs";
 import Login from "./components/Login";
 import Teams from "./components/Teams";
-import Signup from "./components/Signup";
-import Profile from "./components/Profile";
-import CompleteProfile from "./components/CompleteProfile";
 import Stargazers from "./components/Stargazers";
 import Robusta from "./components/Robusta";
 import Programmers from "./components/Programmers";
@@ -25,10 +22,7 @@ function App() {
           <Route path="/recruitments" element={<Recruitments />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
           <Route path="/teams" element={<Teams />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/user-details" element={<CompleteProfile />} />
           <Route path="/teams/stargazers" element={<Stargazers />} />
           <Route path="/teams/robusta" element={<Robusta />} />
           <Route path="/teams/programmers" element={<Programmers />} />

@@ -7,25 +7,19 @@ export default function AchievementsCarousel() {
     {
       title: "Andhra Pradesh SpaceTech Summit",
       desc: `Sreyas Malla and Priyangshu Ghosh secured 2nd Prize at the Andhra Pradesh SpaceTech Summit 2026 Project Expo held at Vignan University, Guntur.`,
-      img: "/gemini_gaac_robo.png",
+      img: "/andhratechsummit.jpeg",
       path: "/achievements",
     },
     {
       title: "IIT Madras Robosoccer",
       desc: `Narayana Gupta achieved 2nd place in the RoboSoccer competition at IIT Madras in June 2025.`,
-      img: "/gemini_gaac_workshop.png",
+      img: "/guptarobosoccor.jpeg",
       path: "/achievements",
     },
     {
-      title: "GDG WOW Hackathon",
-      desc: `K Akash Kishan won the GDG WOW 2025 Hackathon by ideating and building a placement preparation application.`,
-      img: "/gaac_starnival.jpeg",
-      path: "/achievements",
-    },
-    {
-      title: "Hackathons",
-      desc: `Hackathons push members to collaborate under pressure, solve real problems, and transform ideas into working prototypes.`,
-      img: "/gaac_hack.jpeg",
+      title: "IASC's Asteroid Search Campaign",
+      desc: `Lanka Geetha Koumudi actively contributed to Team Invictus during IASC's Asteroid Search Campaign, analyzing telescope data.`,
+      img: "/geethaiasc.jpeg",
       path: "/achievements",
     },
   ];

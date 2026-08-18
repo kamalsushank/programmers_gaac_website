@@ -53,26 +53,17 @@ export default function Achievements() {
     {
       title: "Andhra Pradesh SpaceTech Summit",
       desc: `Sreyas Malla and Priyangshu Ghosh secured 2nd Prize at the Andhra Pradesh SpaceTech Summit 2026 Project Expo held at Vignan University, Guntur.`,
-      img: "/gemini_gaac_robo.png",
-      cta: "Know More",
-      path: "/achievements",
-      reverse: false,
+      img: "/andhratechsummit.jpeg",
     },
     {
       title: "IIT Madras Robosoccer",
       desc: `Narayana Gupta achieved 2nd place in the RoboSoccer competition at IIT Madras in June 2025.`,
-      img: "/gemini_gaac_workshop.png",
-      cta: "Know More",
-      path: "/achievements",
-      reverse: true,
+      img: "/guptarobosoccor.jpeg",
     },
     {
-      title: "GDG WOW Hackathon",
-      desc: `K Akash Kishan won the GDG WOW 2025 Hackathon by ideating and building a placement preparation application.`,
-      img: "/gaac_starnival.jpeg",
-      cta: "Know More",
-      path: "/achievements",
-      reverse: false,
+      title: "IASC's Asteroid Search Campaign",
+      desc: `Lanka Geetha Koumudi actively contributed to Team Invictus during IASC's Asteroid Search Campaign, analyzing telescope data.`,
+      img: "/geethaiasc.jpeg",
     },
   ];
 
@@ -159,7 +150,10 @@ export default function Achievements() {
               >
                 {/* Card Wrapper */}
                 <motion.div
-                  whileHover={{ y: -6, boxShadow: "0 0 50px rgba(99,102,241,0.2)" }}
+                  whileHover={{
+                    y: -6,
+                    boxShadow: "0 0 50px rgba(99,102,241,0.2)",
+                  }}
                   transition={{ type: "spring", stiffness: 250, damping: 22 }}
                   className="
                     relative flex items-center
@@ -187,13 +181,11 @@ export default function Achievements() {
                       "
                     />
                     <div className="absolute inset-0 bg-black/50" />
-
                   </div>
 
                   {/* Text Side */}
                   <div className="md:w-1/2 w-full px-8 md:px-12 py-8">
                     {/* Index number */}
-
 
                     <h3 className="font-orbitron text-2xl md:text-3xl font-bold mb-4 group-hover:text-indigo-300 transition-colors duration-300">
                       {item.title}
@@ -202,57 +194,6 @@ export default function Achievements() {
                     <p className="font-space text-gray-300 text-base md:text-lg leading-relaxed max-w-lg">
                       {item.desc}
                     </p>
-
-                    {/* CTA Button */}
-                    {item.path.startsWith("/") ? (
-                      <Link
-                        to={item.path}
-                        className="
-                          mt-6 inline-flex items-center gap-2
-                          px-6 py-2.5
-                          border border-indigo-400/50
-                          text-indigo-300
-                          font-space
-                          rounded-full
-                          hover:bg-indigo-400 hover:text-black
-                          transition-all duration-300
-                        "
-                      >
-                        {item.cta}
-                        <motion.span
-                          animate={{ x: [0, 4, 0] }}
-                          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                          className="text-lg"
-                        >
-                          →
-                        </motion.span>
-                      </Link>
-                    ) : (
-                      <a
-                        href={item.path}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="
-                          mt-6 inline-flex items-center gap-2
-                          px-6 py-2.5
-                          border border-indigo-400/50
-                          text-indigo-300
-                          font-space
-                          rounded-full
-                          hover:bg-indigo-400 hover:text-black
-                          transition-all duration-300
-                        "
-                      >
-                        {item.cta}
-                        <motion.span
-                          animate={{ x: [0, 4, 0] }}
-                          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                          className="text-lg"
-                        >
-                          →
-                        </motion.span>
-                      </a>
-                    )}
                   </div>
                 </motion.div>
 
